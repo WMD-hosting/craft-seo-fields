@@ -14,6 +14,7 @@ use CraftCms\Cms\Support\Url;
 use CraftCms\DependencyAwareCache\Dependency\TagDependency;
 use CraftCms\DependencyAwareCache\Facades\DependencyCache;
 use Illuminate\Support\Facades\DB;
+use studioespresso\seofields\events\FilterSitemapEntriesEvent;
 use studioespresso\seofields\SeoFields;
 
 /**
@@ -81,7 +82,9 @@ class SitemapService
         return $this->cached($key, [self::SITEMAP_CACHE_KEY, $key], function () use ($siteId, $sectionId, $settings) {
             $entries = Entry::find()->siteId($siteId)->sectionId($sectionId)->orderBy('dateUpdated', 'desc')->get();
 
-            return $this->renderUrlset($entries, $settings, $siteId);
+            event($event = new FilterSitemapEntriesEvent($siteId, $sectionId, $entries->all()));
+
+            return $this->renderUrlset($event->entries, $settings, $siteId);
         });
     }
 
@@ -140,13 +143,14 @@ class SitemapService
         return $xml.'</urlset>';
     }
 
-    /** The element's URIs in the other enabled sites */
+    /** The element's URIs in the other enabled sites where the element itself is enabled too */
     private function alternates(int $elementId, int $siteId): iterable
     {
         return DB::table(Table::ELEMENTS_SITES.' as es')
             ->join(Table::SITES.' as s', 's.id', '=', 'es.siteId')
             ->where('es.elementId', $elementId)
             ->where('es.siteId', '!=', $siteId)
+            ->where('es.enabled', true)
             ->whereNotNull('es.uri')
             ->where('s.enabled', true)
             ->whereNull('s.dateDeleted')

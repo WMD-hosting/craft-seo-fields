@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+- Added `FilterSitemapEntriesEvent`, so site code can leave entries out of a section's sitemap
+
+### Fixed
+- The sitemap no longer lists hreflang alternates for sites where the entry is disabled
+
 ## 6.0.0-alpha.1 - 2026-05-20
 ### Added
 - Initial support for Craft 6.0.0

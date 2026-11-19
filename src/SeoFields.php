@@ -43,6 +43,7 @@ use studioespresso\seofields\fields\SeoField;
 use studioespresso\seofields\http\HandleNotFound;
 use studioespresso\seofields\models\Settings;
 use studioespresso\seofields\services\DefaultsService;
+use studioespresso\seofields\services\NewElements;
 use studioespresso\seofields\services\NotFoundService;
 use studioespresso\seofields\services\RedirectService;
 use studioespresso\seofields\services\RenderService;
@@ -182,6 +183,10 @@ class SeoFields extends Plugin
                 if ($this->shouldTrackUris($event->element)) {
                     $this->redirectService->handleUriChange($event->element);
                 }
+
+                if ($event instanceof ElementSaved && $event->isNew && $event->element->id && ! ElementHelper::isDraftOrRevision($event->element)) {
+                    app(NewElements::class)->add((int) $event->element->id);
+                }
             });
         }
     }
@@ -190,6 +195,7 @@ class SeoFields extends Plugin
     {
         return ! $element->propagating
             && ! ElementHelper::isDraftOrRevision($element)
-            && ! ElementHelper::isTempSlug($element->slug);
+            && ! ElementHelper::isTempSlug($element->slug)
+            && ! app(NewElements::class)->has($element->id);
     }
 }

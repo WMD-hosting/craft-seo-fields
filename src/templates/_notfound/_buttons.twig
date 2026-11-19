@@ -1,12 +1,14 @@
-{% import '_includes/forms' as forms %}
-
+{# Craft 6 has no _includes/forms macros: a plain select, styled by the CP #}
 <div class="flex gap-2 items-center">
-    {{ forms.select({
-        id: 'seofields-display',
-        name: 'display',
-        options: viewOptions,
-        value: display,
-    }) }}
+    <div class="select">
+        <select id="seofields-display" name="display" aria-label="{{ 'Display'|t('seo-fields') }}">
+            {% for key, option in viewOptions %}
+                {% set optionValue = option.value ?? key %}
+                {% set optionLabel = option.label ?? option %}
+                <option value="{{ optionValue }}"{% if optionValue == display %} selected{% endif %}>{{ optionLabel }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
     <form method="post" action="{{ cpUrl('seo-fields/not-found/clear-all') }}"
           onsubmit="return confirm({{ "Are you sure you want to remove all tracked 404's?"|t('seo-fields')|json_encode }})">

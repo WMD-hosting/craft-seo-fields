@@ -20,11 +20,11 @@ use CraftCms\Cms\Element\Events\ElementSaving;
 use CraftCms\Cms\Element\Events\ElementSlugAndUriUpdated;
 use CraftCms\Cms\Element\Events\ElementSlugAndUriUpdating;
 use CraftCms\Cms\Entry\Events\EntryTypeDeleted;
-use CraftCms\Cms\Form\Controls\Lightswitch;
-use CraftCms\Cms\Form\Controls\Text;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\FormContext;
-use CraftCms\Cms\Form\Nodes\Field;
+use CraftCms\Cms\Ui\Controls\Lightswitch;
+use CraftCms\Cms\Ui\Controls\Text;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\UiContext;
+use CraftCms\Cms\Ui\Nodes\Field;
 use CraftCms\Cms\GarbageCollection\Events\RunningGarbageCollection;
 use CraftCms\Cms\Plugin\Plugin;
 use CraftCms\Cms\Plugin\PluginSettings;
@@ -110,9 +110,9 @@ class SeoFields extends Plugin
         return new Settings;
     }
 
-    public function settingsForm(FormContext $context = new FormContext): ?Form
+    public function settingsUi(UiContext $context = new UiContext): ?Ui
     {
-        return Form::make([
+        return Ui::make([
             Field::make(t('Plugin sidebar label', category: 'seo-fields'), Text::make('pluginLabel')->size(25)),
             Field::make(t('Title seperator', category: 'seo-fields'), Text::make('titleSeperator')->size(3))
                 ->instructions(t('A character used to seperate your `<title>` from the site name', category: 'seo-fields')),

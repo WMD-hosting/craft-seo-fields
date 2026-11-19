@@ -2,11 +2,11 @@
 
 namespace studioespresso\seofields\controllers;
 
-use CraftCms\Cms\Form\Controls\Choice;
-use CraftCms\Cms\Form\Controls\Text;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\Nodes\Field;
-use CraftCms\Cms\Form\Nodes\HiddenField;
+use CraftCms\Cms\Ui\Controls\Choice;
+use CraftCms\Cms\Ui\Controls\Text;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\Nodes\Field;
+use CraftCms\Cms\Ui\Nodes\HiddenField;
 use CraftCms\Cms\Http\RespondsWithFlash;
 use CraftCms\Cms\Http\Responses\CpScreenResponse;
 use CraftCms\Cms\Support\Facades\Path;
@@ -168,7 +168,7 @@ class RedirectsController
             $columns[] = ['label' => (string) $header, 'value' => (string) $index];
         }
 
-        return $this->formScreen(t('Import redirects', category: 'seo-fields'), null, Form::make([
+        return $this->formScreen(t('Import redirects', category: 'seo-fields'), null, Ui::make([
             Field::make(t('Pattern / URL', category: 'seo-fields'), Choice::make('patternCol')->options($columns))->required(),
             Field::make(t('Redirect to', category: 'seo-fields'), Choice::make('redirectCol')->options($columns))->required(),
             Field::make(t('Site', category: 'seo-fields'), Choice::make('siteId')->options($this->siteOptions())),
@@ -210,9 +210,9 @@ class RedirectsController
             ->inertiaPage('cp/Screen');
     }
 
-    private function redirectForm(): Form
+    private function redirectForm(): Ui
     {
-        return Form::make([
+        return Ui::make([
             HiddenField::make('record'),
             ...(Sites::isMultiSite() ? [
                 Field::make(t('Enable for site', category: 'seo-fields'), Choice::make('siteId')->options($this->siteOptions()))

@@ -4,9 +4,8 @@ namespace studioespresso\seofields\controllers\concerns;
 
 use CraftCms\Cms\Cp\Data\ActionItem;
 use CraftCms\Cms\Cp\Html\MenuHtml;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\FormContext;
-use CraftCms\Cms\Form\FormResolver;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\UiContext;
 use CraftCms\Cms\Http\Responses\CpScreenResponse;
 use CraftCms\Cms\Site\Data\Site;
 use CraftCms\Cms\Support\Facades\HtmlStack;
@@ -44,14 +43,13 @@ trait SeoCpScreen
     }
 
     /**
-     * A screen rendered by Craft's Form page, submitting to the current URL.
+     * A screen rendered by Craft's Ui page, submitting to the current URL.
      *
      * @param  array<string, mixed>  $values
      */
-    protected function formScreen(string $title, ?Site $site, Form $form, array $values = []): CpScreenResponse
+    protected function formScreen(string $title, ?Site $site, Ui $ui, array $values = []): CpScreenResponse
     {
-        return $this->screen($title, $site)->inertiaPage('Form', [
-            'form' => app(FormResolver::class)->resolve($form, new FormContext(values: $values)),
+        return $this->screen($title, $site)->ui($ui, new UiContext(values: $values), [
             'submit' => [
                 'method' => 'post',
                 'url' => request()->fullUrl(),

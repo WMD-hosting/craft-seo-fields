@@ -3,11 +3,11 @@
 namespace studioespresso\seofields\controllers;
 
 use CraftCms\Cms\Asset\Elements\Asset;
-use CraftCms\Cms\Form\Controls\AssetSelect;
-use CraftCms\Cms\Form\Controls\Text;
-use CraftCms\Cms\Form\Controls\Textarea;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\Nodes\Field;
+use CraftCms\Cms\Ui\Controls\AssetSelect;
+use CraftCms\Cms\Ui\Controls\Text;
+use CraftCms\Cms\Ui\Controls\Textarea;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\Nodes\Field;
 use CraftCms\Cms\Http\RespondsWithFlash;
 use CraftCms\Cms\Http\Responses\CpScreenResponse;
 use Illuminate\Http\RedirectResponse;
@@ -51,7 +51,7 @@ class DefaultsController
         $site = $this->site($request);
         $data = SeoFields::getInstance()->defaultsService->getDataBySite($site);
 
-        return $this->formScreen(t('Meta', category: 'seo-fields'), $site, Form::make([
+        return $this->formScreen(t('Meta', category: 'seo-fields'), $site, Ui::make([
             Field::make(t('Default site title', category: 'seo-fields'), Text::make('defaultSiteTitle')),
             Field::make(t('Default meta description', category: 'seo-fields'), Textarea::make('defaultMetaDescription')->maxLength(300)),
             Field::make(t('Title seperator', category: 'seo-fields'), Text::make('titleSeperator')->size(3))

@@ -3,13 +3,13 @@
 namespace studioespresso\seofields\controllers;
 
 use CraftCms\Cms\Asset\Elements\Asset;
-use CraftCms\Cms\Form\Controls\AssetSelect;
-use CraftCms\Cms\Form\Controls\Choice;
-use CraftCms\Cms\Form\Controls\Table;
-use CraftCms\Cms\Form\Controls\Text;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\Nodes\Field;
-use CraftCms\Cms\Form\Nodes\Group;
+use CraftCms\Cms\Ui\Controls\AssetSelect;
+use CraftCms\Cms\Ui\Controls\Choice;
+use CraftCms\Cms\Ui\Controls\Table;
+use CraftCms\Cms\Ui\Controls\Text;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\Nodes\Field;
+use CraftCms\Cms\Ui\Nodes\Group;
 use CraftCms\Cms\Http\RespondsWithFlash;
 use CraftCms\Cms\Http\Responses\CpScreenResponse;
 use CraftCms\Cms\Support\Facades\Sections;
@@ -36,7 +36,7 @@ class SchemaController
             Choice::make("sections.$section->id")->options($this->options($schemaService->getDefaultOptions())),
         ))->values()->all();
 
-        return $this->formScreen(t('Schema.org', category: 'seo-fields'), $site, Form::make([
+        return $this->formScreen(t('Schema.org', category: 'seo-fields'), $site, Ui::make([
             Group::make('schema-organization', [
                 Field::make(t('Name', category: 'seo-fields'), Text::make('organizationName'))
                     ->instructions(t('Leave blank to use the default site title', category: 'seo-fields'))

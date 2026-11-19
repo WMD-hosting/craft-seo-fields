@@ -2,12 +2,12 @@
 
 namespace studioespresso\seofields\controllers;
 
-use CraftCms\Cms\Form\Controls\Choice;
-use CraftCms\Cms\Form\Controls\Lightswitch;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\Nodes\Field;
-use CraftCms\Cms\Form\Nodes\Group;
-use CraftCms\Cms\Form\Nodes\MarkdownContent;
+use CraftCms\Cms\Ui\Controls\Choice;
+use CraftCms\Cms\Ui\Controls\Lightswitch;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\Nodes\Field;
+use CraftCms\Cms\Ui\Nodes\Group;
+use CraftCms\Cms\Ui\Nodes\MarkdownContent;
 use CraftCms\Cms\Http\RespondsWithFlash;
 use CraftCms\Cms\Http\Responses\CpScreenResponse;
 use CraftCms\Cms\Section\Data\Section;
@@ -62,7 +62,7 @@ class SitemapController
             ])->label(t($section->name, category: 'site'));
         }
 
-        return $this->formScreen(t('Sitemap.xml', category: 'seo-fields'), $site, Form::make($nodes), $values);
+        return $this->formScreen(t('Sitemap.xml', category: 'seo-fields'), $site, Ui::make($nodes), $values);
     }
 
     public function store(Request $request): Response

@@ -16,19 +16,19 @@ use CraftCms\Cms\Asset\Elements\Asset;
 use CraftCms\Cms\Element\Contracts\ElementInterface;
 use CraftCms\Cms\Field\Field;
 use CraftCms\Cms\Field\FieldContext;
-use CraftCms\Cms\Form\Contracts\Control;
-use CraftCms\Cms\Form\Controls\AssetSelect;
-use CraftCms\Cms\Form\Controls\Choice;
-use CraftCms\Cms\Form\Controls\ContentBlock;
-use CraftCms\Cms\Form\Controls\Lightswitch;
-use CraftCms\Cms\Form\Controls\Text;
-use CraftCms\Cms\Form\Controls\Textarea;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\FormContext;
-use CraftCms\Cms\Form\Nodes\Field as FormField;
-use CraftCms\Cms\Form\Nodes\Group;
-use CraftCms\Cms\Form\Nodes\MarkdownContent;
-use CraftCms\Cms\Form\Nodes\TemplateContent;
+use CraftCms\Cms\Ui\Contracts\Control;
+use CraftCms\Cms\Ui\Controls\AssetSelect;
+use CraftCms\Cms\Ui\Controls\Choice;
+use CraftCms\Cms\Ui\Controls\ContentBlock;
+use CraftCms\Cms\Ui\Controls\Lightswitch;
+use CraftCms\Cms\Ui\Controls\Text;
+use CraftCms\Cms\Ui\Controls\Textarea;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\UiContext;
+use CraftCms\Cms\Ui\Nodes\Field as FormField;
+use CraftCms\Cms\Ui\Nodes\Group;
+use CraftCms\Cms\Ui\Nodes\MarkdownContent;
+use CraftCms\Cms\Ui\Nodes\TemplateContent;
 use CraftCms\Cms\Support\Json;
 use CraftCms\Cms\Support\Query;
 use studioespresso\seofields\models\SeoFieldModel;
@@ -100,9 +100,9 @@ class SeoField extends Field
         return $value instanceof SeoFieldModel ? $value->toArray() : null;
     }
 
-    public function settingsForm(FormContext $context = new FormContext): Form
+    public function settingsUi(UiContext $context = new UiContext): Ui
     {
-        return Form::make([
+        return Ui::make([
             MarkdownContent::make('seo-fields-handle-note', t('Note that if your field handle is **not** `seo`, you will have to set [`fieldHandle`]({link}) in the plugin config to tell it about your field.', ['link' => 'https://studioespresso.github.io/craft-seo-fields/field.html#your-field'], 'seo-fields')),
             FormField::make(t('Show general tab', category: 'seo-fields'), Lightswitch::make('tabs.general')->value($this->showTab('general'))),
             FormField::make(t('Show social media tab', category: 'seo-fields'), Lightswitch::make('tabs.facebook')->value($this->showTab('facebook'))),
@@ -114,7 +114,7 @@ class SeoField extends Field
         ]);
     }
 
-    public function formControl(FieldContext $context): Control
+    public function uiControl(FieldContext $context): Control
     {
         /** @var SeoFieldModel $value */
         $value = $context->value;
@@ -168,7 +168,7 @@ class SeoField extends Field
         }
 
         return ContentBlock::make($context->path)
-            ->form(Form::make($groups))
+            ->ui(Ui::make($groups))
             ->value($value->toArray());
     }
 

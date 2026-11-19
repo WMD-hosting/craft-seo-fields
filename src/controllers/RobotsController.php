@@ -2,11 +2,11 @@
 
 namespace studioespresso\seofields\controllers;
 
-use CraftCms\Cms\Form\Controls\Lightswitch;
-use CraftCms\Cms\Form\Controls\Textarea;
-use CraftCms\Cms\Form\Form;
-use CraftCms\Cms\Form\Nodes\Field;
-use CraftCms\Cms\Form\Nodes\MarkdownContent;
+use CraftCms\Cms\Ui\Controls\Lightswitch;
+use CraftCms\Cms\Ui\Controls\Textarea;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\Nodes\Field;
+use CraftCms\Cms\Ui\Nodes\MarkdownContent;
 use CraftCms\Cms\Http\RespondsWithFlash;
 use CraftCms\Cms\Http\Responses\CpScreenResponse;
 use CraftCms\Cms\Support\Facades\Sites;
@@ -29,7 +29,7 @@ class RobotsController
         $site = $perSite ? $this->site($request) : Sites::getPrimarySite();
         $data = SeoFields::getInstance()->defaultsService->getDataBySite($site);
 
-        return $this->formScreen(t('Robots.txt', category: 'seo-fields'), $perSite ? $site : null, Form::make([
+        return $this->formScreen(t('Robots.txt', category: 'seo-fields'), $perSite ? $site : null, Ui::make([
             MarkdownContent::make('robots-intro', t("A robots.txt file tells search engine crawlers which pages or files the crawler can or can't request from your site. This is used mainly to avoid overloading your site with requests; it is not a mechanism for keeping a web page out of Google.", category: 'seo-fields')),
             Field::make(t('Enable robots.txt', category: 'seo-fields'), Lightswitch::make('enableRobots'))
                 ->instructions(t('Let the plugin handle your robots.txt', category: 'seo-fields')),

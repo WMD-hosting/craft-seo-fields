@@ -170,6 +170,16 @@ class SeoFieldModel
         }
     }
 
+    /**
+     * The section defaults of the element this value belongs to (SectionMetaService).
+     *
+     * @return array{title: ?string, description: ?string, image: ?Asset}
+     */
+    public function sectionMeta(): array
+    {
+        return SeoFields::getInstance()->sectionMetaService->forElement($this->element);
+    }
+
     public function getSiteNameWithSeperator(): string|false
     {
         if ($this->hideSiteName) {
@@ -190,7 +200,7 @@ class SeoFieldModel
 
         $title = match (true) {
             (bool) ElementSeoMacros::get($element, 'socialTitle') => ElementSeoMacros::get($element, 'socialTitle'),
-            $element && ! $this->metaTitle => $element->title,
+            $element && ! $this->metaTitle => $this->sectionMeta()['title'] ?? $element->title,
             default => $this->metaTitle,
         };
 
@@ -228,6 +238,7 @@ class SeoFieldModel
         return ElementSeoMacros::get($this->element, 'socialDescription')
             ?: ElementSeoMacros::get($this->element, 'metaDescription')
             ?: $this->metaDescription
+            ?: $this->sectionMeta()['description']
             ?: $this->siteDefault->defaultMetaDescription;
     }
 
@@ -235,6 +246,8 @@ class SeoFieldModel
     {
         return ElementSeoMacros::get($this->element, 'socialDescription')
             ?: $this->facebookDescription
+            ?: $this->metaDescription
+            ?: $this->sectionMeta()['description']
             ?: $this->siteDefault->defaultMetaDescription;
     }
 
@@ -245,7 +258,11 @@ class SeoFieldModel
     {
         $asset ??= ElementSeoMacros::get($this->element, 'socialImage');
 
-        $id = $this->facebookImage[0] ?? $this->siteDefault->defaultImage[0] ?? null;
+        if (! $asset && ! empty($this->facebookImage[0])) {
+            $asset = Asset::find()->id($this->facebookImage[0])->first();
+        }
+        $asset ??= $this->sectionMeta()['image'];
+        $id = $this->siteDefault->defaultImage[0] ?? null;
         if (! $asset && $id) {
             $asset = Asset::find()->id($id)->first();
         }

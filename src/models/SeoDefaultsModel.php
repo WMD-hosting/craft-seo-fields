@@ -19,6 +19,7 @@ class SeoDefaultsModel
         'organizationLogo',
         'sameAs',
         'siteEntity',
+        'sectionMeta',
     ];
 
     public ?int $id = null;
@@ -54,6 +55,14 @@ class SeoDefaultsModel
 
     public ?string $siteEntity = null;
 
+    /**
+     * Meta defaults per section, keyed by section ID: `title` and `description` object templates
+     * (`{title} domain`), `imageField` (handle of an Assets field) and `image` (asset IDs).
+     *
+     * @var array<int|string, array{title?: ?string, description?: ?string, imageField?: ?string, image?: int[]|null}>|null
+     */
+    public ?array $sectionMeta = null;
+
     public function __construct(array $attributes = [])
     {
         $this->setAttributes($attributes);
@@ -70,6 +79,7 @@ class SeoDefaultsModel
                 'enableRobots' => $value === null ? null : (bool) $value,
                 'defaultImage', 'organizationLogo' => $this->normalizeIds($value),
                 'sameAs' => is_array($value) ? array_values($value) : null,
+                'sectionMeta' => is_array($value) ? $value : null,
                 'schema', 'sitemap' => is_array($value) ? Json::encode($value) : ($value === '' ? null : $value),
                 default => $value === '' ? null : $value,
             };

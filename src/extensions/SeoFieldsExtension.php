@@ -24,6 +24,7 @@ class SeoFieldsExtension extends AbstractExtension implements GlobalsInterface
                 [$this, 'getSeoFields'],
                 ['needs_context' => true]
             ),
+            new TwigFunction('seoSectionMeta', fn ($element = null) => SeoFields::getInstance()->sectionMetaService->forElement($element instanceof \CraftCms\Cms\Element\Contracts\ElementInterface ? $element : null)),
         ];
     }
 

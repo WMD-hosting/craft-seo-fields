@@ -6,6 +6,7 @@ use studioespresso\seofields\controllers\NotFoundController;
 use studioespresso\seofields\controllers\RedirectsController;
 use studioespresso\seofields\controllers\RobotsController;
 use studioespresso\seofields\controllers\SchemaController;
+use studioespresso\seofields\controllers\SectionsController;
 use studioespresso\seofields\controllers\SitemapController;
 
 Route::middleware(['auth', 'can:accessCp', 'can:accessPlugin-seo-fields'])->prefix('seo-fields')->group(function () {
@@ -24,6 +25,11 @@ Route::middleware(['auth', 'can:accessCp', 'can:accessPlugin-seo-fields'])->pref
     Route::middleware('can:seo-fields:sitemap')->group(function () {
         Route::get('sitemap', [SitemapController::class, 'edit']);
         Route::post('sitemap', [SitemapController::class, 'store']);
+    });
+
+    Route::middleware('can:seo-fields:sections')->group(function () {
+        Route::get('sections', [SectionsController::class, 'edit']);
+        Route::post('sections', [SectionsController::class, 'store']);
     });
 
     Route::middleware('can:seo-fields:schema')->group(function () {

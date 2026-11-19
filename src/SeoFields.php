@@ -47,6 +47,7 @@ use studioespresso\seofields\services\NotFoundService;
 use studioespresso\seofields\services\RedirectService;
 use studioespresso\seofields\services\RenderService;
 use studioespresso\seofields\services\SchemaService;
+use studioespresso\seofields\services\SectionMetaService;
 use studioespresso\seofields\services\SitemapService;
 
 use function CraftCms\Cms\t;
@@ -82,6 +83,8 @@ class SeoFields extends Plugin
 
     public SchemaService $schemaService { get => $this->schemaService ??= new SchemaService; }
 
+    public SectionMetaService $sectionMetaService { get => $this->sectionMetaService ??= new SectionMetaService; }
+
     /** Sections in the CP subnav: handle => [label, permission] */
     private const SECTIONS = [
         'defaults' => ['Meta', 'seo-fields:default'],
@@ -90,6 +93,7 @@ class SeoFields extends Plugin
         'schema' => ['Schema.org', 'seo-fields:schema'],
         'robots' => ['Robots.txt', 'seo-fields:robots'],
         'sitemap' => ['Sitemap.xml', 'seo-fields:sitemap'],
+        'sections' => ['Sections', 'seo-fields:sections'],
     ];
 
     public function boot(): void

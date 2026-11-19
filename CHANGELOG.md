@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 - The sitemap no longer lists hreflang alternates for sites where the entry is disabled
+- An entry whose URI changes in the same request or queue job that created it no longer leaves an automatic redirect behind
 
 ## 6.0.0-alpha.1 - 2026-05-20
 ### Added
